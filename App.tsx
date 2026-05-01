@@ -1,13 +1,11 @@
 import { StatusBar } from 'expo-status-bar';
-import { Text, View } from 'react-native';
+import ExpensesScreen from './app/screens/ExpensesScreen';
 
 export default function App() {
   return (
-    <View className="flex-1 items-center justify-center bg-black">
-      <Text className="text-white text-xl font-bold">
-        Budget App
-      </Text>
+    <>
+      <ExpensesScreen />
       <StatusBar style="auto" />
-    </View>
+    </>
   );
 }
