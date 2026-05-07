@@ -32,50 +32,49 @@ export default function ExpensesScreen() {
       .sort((a, b) => b.amount - a.amount);
   }, [totalExpenses]);
 
-  const handlePrevMonth = () => {
-    // TODO: implement month navigation
-  };
-
-  const handleNextMonth = () => {
-    // TODO: implement month navigation
-  };
-
-  const handleAddCategory = () => {
-    // TODO: implement add category action
-  };
+  const handlePrevMonth = () => {};
+  const handleNextMonth = () => {};
+  const handleAddCategory = () => {};
 
   return (
-    <View className="flex-1 bg-neutral-50">
+    <ScrollView
+      className="flex-1 bg-slate-950"
+      contentContainerClassName="px-5 pb-10 pt-14"
+      showsVerticalScrollIndicator={false}
+    >
       <ExpensesHeader
         currentMonth={currentMonth}
         onPrevMonth={handlePrevMonth}
         onNextMonth={handleNextMonth}
       />
 
-      <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
-        <View className="px-5 pt-6 pb-4">
-          <BudgetOverviewCard
-            totalExpenses={totalExpenses}
-            monthlyBudget={monthlyBudget}
-            remaining={remaining}
-            categories={categoriesWithPercentage}
-          />
-        </View>
+      <BudgetOverviewCard
+        totalExpenses={totalExpenses}
+        monthlyBudget={monthlyBudget}
+        remaining={remaining}
+        categories={categoriesWithPercentage}
+      />
 
-        <View className="px-5 pb-6">
-          <Text className="text-lg font-bold text-gray-800 mb-4">
-            Kategorie
+      <View className="mt-8 flex-row items-center justify-between">
+        <View>
+          <Text className="text-2xl font-bold text-white">Kategorie</Text>
+          <Text className="mt-1 text-sm text-slate-400">
+            Kontroluj limity miesięczne
           </Text>
-
-          <View className="flex-row flex-wrap gap-3 justify-center">
-            {categoriesWithPercentage.map((category) => (
-              <CategoryCard key={category.id} category={category} />
-            ))}
-
-            <AddCategoryCard onPress={handleAddCategory} />
-          </View>
         </View>
-      </ScrollView>
-    </View>
+
+        <Text className="rounded-full bg-slate-900 px-3 py-1 text-xs font-semibold text-slate-300">
+          {categoriesWithPercentage.length} aktywnych
+        </Text>
+      </View>
+
+      <View className="mt-4 gap-3">
+        {categoriesWithPercentage.map((category) => (
+          <CategoryCard key={category.id} category={category} />
+        ))}
+
+        <AddCategoryCard onPress={handleAddCategory} />
+      </View>
+    </ScrollView>
   );
 }

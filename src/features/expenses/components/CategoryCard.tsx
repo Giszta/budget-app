@@ -1,8 +1,7 @@
 import { Text, TouchableOpacity, View } from "react-native";
 
-import { ExpenseCategoryWithPercentage } from "../types";
-import { darkenColor } from "../../../utils/colors";
 import { formatCurrency } from "../../../utils/currency";
+import { ExpenseCategoryWithPercentage } from "../types";
 
 type CategoryCardProps = {
   category: ExpenseCategoryWithPercentage;
@@ -14,58 +13,51 @@ export function CategoryCard({ category }: CategoryCardProps) {
 
   return (
     <TouchableOpacity
-      className="bg-white rounded-3xl shadow-sm overflow-hidden"
-      style={{ width: "20%" }}
-      activeOpacity={0.7}
+      activeOpacity={0.85}
+      className="rounded-2xl border border-slate-800 bg-slate-900 px-4 py-3"
     >
-      <View className="p-3">
-        <Text
-          className="text-xs font-semibold text-gray-700 text-center mb-3"
-          numberOfLines={1}
-        >
-          {category.name}
-        </Text>
-
-        <Text
-          className={`text-sm font-bold text-center mb-2 ${
-            isOverBudget ? "text-red-400" : "text-gray-800"
-          }`}
-        >
-          {formatCurrency(category.amount)}
-        </Text>
-
-        <View className="items-center mb-2">
+      <View className="flex-row items-center justify-between">
+        <View className="flex-1 flex-row items-center">
           <View
-            className="w-16 h-16 rounded-full overflow-hidden relative items-center justify-center"
-            style={{ backgroundColor: category.color }}
+            className="h-11 w-11 items-center justify-center rounded-2xl"
+            style={{ backgroundColor: `${category.color}25` }}
           >
-            <View
-              className="absolute bottom-0 w-full"
-              style={{
-                backgroundColor: isOverBudget
-                  ? "#EF4444"
-                  : darkenColor(category.color),
-                height: `${percentage}%`,
-              }}
-            />
+            <Text className="text-xl">{category.icon}</Text>
+          </View>
 
-            <View
-              className="absolute inset-0 flex items-center justify-center"
-              style={{
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <Text style={{ fontSize: 28, lineHeight: 32 }}>
-                {category.icon}
-              </Text>
-            </View>
+          <View className="ml-3 flex-1">
+            <Text className="text-base font-bold text-white" numberOfLines={1}>
+              {category.name}
+            </Text>
+
+            <Text className="mt-1 text-xs text-slate-400">
+              Limit: {formatCurrency(category.budget)}
+            </Text>
           </View>
         </View>
 
-        <Text className="text-xs text-gray-400 text-center">
-          z {formatCurrency(category.budget)}
-        </Text>
+        <View className="ml-3 items-end">
+          <Text className="text-base font-bold text-white">
+            {formatCurrency(category.amount)}
+          </Text>
+
+          <Text
+            className={`mt-1 text-xs font-semibold ${
+              isOverBudget ? "text-red-400" : "text-emerald-400"
+            }`}
+          >
+            {percentage.toFixed(0)}%
+          </Text>
+        </View>
+      </View>
+
+      <View className="mt-3 h-1.5 overflow-hidden rounded-full bg-slate-800">
+        <View
+          className={`h-full rounded-full ${
+            isOverBudget ? "bg-red-400" : "bg-emerald-400"
+          }`}
+          style={{ width: `${percentage}%` }}
+        />
       </View>
     </TouchableOpacity>
   );

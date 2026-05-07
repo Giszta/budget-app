@@ -12,26 +12,31 @@ export function ExpensesHeader({
   onNextMonth,
 }: ExpensesHeaderProps) {
   return (
-    <View className="pt-14 pb-4 px-5 bg-white">
-      <View className="flex-row items-center justify-center">
+    <View className="mb-6 flex-row items-center justify-between">
+      <View>
+        <Text className="text-sm font-medium uppercase tracking-[3px] text-emerald-400">
+          Budget App
+        </Text>
+        <Text className="mt-2 text-3xl font-bold text-white">Wydatki</Text>
+      </View>
+
+      <View className="flex-row items-center rounded-full bg-slate-900 p-1">
         <TouchableOpacity
           onPress={onPrevMonth}
-          className="w-10 h-10 items-center justify-center"
+          className="h-10 w-10 items-center justify-center rounded-full bg-slate-800"
         >
-          <Text className="text-3xl text-gray-400 font-light">‹</Text>
+          <Text className="text-2xl text-white">‹</Text>
         </TouchableOpacity>
 
-        <View className="flex-1 items-center mx-4">
-          <Text className="text-2xl font-bold text-gray-800">
-            {currentMonth}
-          </Text>
-        </View>
+        <Text className="px-4 text-sm font-semibold text-slate-200">
+          {currentMonth}
+        </Text>
 
         <TouchableOpacity
           onPress={onNextMonth}
-          className="w-10 h-10 items-center justify-center"
+          className="h-10 w-10 items-center justify-center rounded-full bg-emerald-500"
         >
-          <Text className="text-3xl text-gray-400 font-light">›</Text>
+          <Text className="text-2xl text-slate-950">›</Text>
         </TouchableOpacity>
       </View>
     </View>
