@@ -1,9 +1,12 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
+
+import { CATEGORY_META } from "../features/expenses/constants/categories";
 import type {
   CreateTransactionPayload,
   Transaction,
+  TransactionCategory,
 } from "../types/transaction";
 
 interface TransactionState {
@@ -12,6 +15,8 @@ interface TransactionState {
   deleteTransaction: (id: string) => void;
   clearAll: () => void;
 }
+
+// --- Global selectors ---
 
 export const selectTotalIncome = (transactions: Transaction[]): number =>
   transactions
@@ -25,6 +30,26 @@ export const selectTotalExpenses = (transactions: Transaction[]): number =>
 
 export const selectBalance = (transactions: Transaction[]): number =>
   selectTotalIncome(transactions) - selectTotalExpenses(transactions);
+
+// Returns total amount spent per expense category
+export const selectExpensesByCategory = (
+  transactions: Transaction[],
+): Record<TransactionCategory, number> => {
+  const result = {} as Record<TransactionCategory, number>;
+
+  // Initialize all categories to 0
+  for (const key of Object.keys(CATEGORY_META) as TransactionCategory[]) {
+    result[key] = 0;
+  }
+
+  transactions
+    .filter((t) => t.type === "expense")
+    .forEach((t) => {
+      result[t.category] = (result[t.category] ?? 0) + t.amount;
+    });
+
+  return result;
+};
 
 export const useTransactionStore = create<TransactionState>()(
   persist(
