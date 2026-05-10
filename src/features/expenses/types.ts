@@ -1,5 +1,5 @@
 export type ExpenseCategory = {
-  id: number;
+  id: string; // changed: was number, now matches TransactionCategory string
   name: string;
   icon: string;
   color: string;
