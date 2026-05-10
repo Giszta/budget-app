@@ -1,8 +1,9 @@
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { CompositeScreenProps } from "@react-navigation/native";
 import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
+import { SwipeableTransactionItem } from "../features/transactions/components/SwipeableTransactionItem";
 import {
   selectBalance,
   selectTotalExpenses,
@@ -12,7 +13,6 @@ import {
 import { formatCurrency } from "../utils/currency";
 import { RootStackParamList, RootTabParamList } from "../navigation/types";
 
-// Composite type: this screen lives in Tab but needs to navigate in Stack
 type Props = CompositeScreenProps<
   BottomTabScreenProps<RootTabParamList, "Transactions">,
   NativeStackScreenProps<RootStackParamList>
@@ -43,7 +43,6 @@ export default function TransactionsScreen({ navigation }: Props) {
           </Text>
         </View>
 
-        {/* Opens AddTransaction modal */}
         <TouchableOpacity
           activeOpacity={0.85}
           onPress={() => navigation.navigate("AddTransaction")}
@@ -102,7 +101,6 @@ export default function TransactionsScreen({ navigation }: Props) {
       </View>
 
       {transactions.length === 0 ? (
-        // Empty state
         <View className="mt-16 items-center">
           <Text className="text-5xl">💳</Text>
           <Text className="mt-4 text-lg font-bold text-slate-400">
@@ -113,46 +111,14 @@ export default function TransactionsScreen({ navigation }: Props) {
           </Text>
         </View>
       ) : (
-        <View className="mt-4 gap-3">
-          {transactions.map((transaction) => {
-            const isIncome = transaction.type === "income";
-
-            return (
-              <TouchableOpacity
-                key={transaction.id}
-                activeOpacity={0.85}
-                className="flex-row items-center justify-between rounded-3xl border border-slate-800 bg-slate-900 p-4"
-              >
-                <View className="flex-1 flex-row items-center">
-                  <View
-                    className={`h-12 w-12 items-center justify-center rounded-2xl ${
-                      isIncome ? "bg-emerald-500/20" : "bg-red-500/20"
-                    }`}
-                  >
-                    <Text className="text-xl">{isIncome ? "↙️" : "↗️"}</Text>
-                  </View>
-
-                  <View className="ml-3 flex-1">
-                    <Text className="text-base font-bold text-white">
-                      {transaction.title}
-                    </Text>
-                    <Text className="mt-1 text-xs text-slate-400">
-                      {transaction.category} • {transaction.date}
-                    </Text>
-                  </View>
-                </View>
-
-                <Text
-                  className={`ml-3 text-base font-black ${
-                    isIncome ? "text-emerald-400" : "text-red-400"
-                  }`}
-                >
-                  {isIncome ? "+" : "-"}
-                  {formatCurrency(transaction.amount)}
-                </Text>
-              </TouchableOpacity>
-            );
-          })}
+        // GestureHandlerRootView is already provided by expo – no extra wrapper needed
+        <View className="mt-4">
+          {transactions.map((transaction) => (
+            <SwipeableTransactionItem
+              key={transaction.id}
+              transaction={transaction}
+            />
+          ))}
         </View>
       )}
     </ScrollView>
